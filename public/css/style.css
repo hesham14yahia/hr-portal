@@ -1,0 +1,39 @@
+.right-side .row {
+    margin: 20px
+}
+
+.table tbody tr th {
+    background-color: #00e400 !important
+}
+
+.box {
+    border-top: 0
+}
+
+.btn-filter {
+    margin-top: 10px !important
+}
+
+.right-side .page-header {
+    margin: -10px !important;
+    z-index: 1 !important
+}
+
+.left-side {
+    z-index: 99999
+}
+
+.fixer-img {
+    width: 30%;
+    height: 5%;
+}
+
+.popup-h h3 {
+    margin-top: 0;
+    font-weight: bold;
+    font-family: sans-serif
+}
+
+.popup-h p {
+    margin: 0;
+}
