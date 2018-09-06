@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->integer('mobile');
-            $table->dateTime('hire_date');
+            $table->date('hire_date');
             $table->timestamps();
         });
     }

@@ -15,10 +15,10 @@ class CreateStatusesTable extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('present');
-            $table->integer('absent');
-            $table->integer('sick_leave');
-            $table->integer('day_off');
+            $table->boolean('present');
+            $table->boolean('absent');
+            $table->boolean('sick_leave');
+            $table->boolean('day_off');
             $table->timestamps();
         });
     }

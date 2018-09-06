@@ -1,5 +1,20 @@
 @extends('layouts.app')
 
+{{-- @section('filters')
+        <div class="col-xs-3">
+            {!! Form::open(['action' => 'FixerController@index', 'method' => 'Get']) !!}
+                {{Form::select('city_id', $cities, null, ['class' => 'form-control', 'placeholder' => 'Filter By City'])}}
+                {{Form::submit('Filter', ['class' => 'btn btn-info col-xs-12 btn-filter'])}}
+            {!! Form::close() !!}
+        </div>
+        <div class="col-xs-3">
+            {!! Form::open(['action' => 'FixerController@index', 'method' => 'GET']) !!}
+                {{Form::select('category_id', $categories, null, ['class' => 'form-control', 'placeholder' => 'Filter By Category'])}}
+                {{Form::submit('Filter', ['class' => 'btn btn-info col-xs-12 btn-filter'])}}
+            {!! Form::close() !!}
+        </div>
+@endsection --}}
+
 @section('content')
 <div class="col-xs-12">
     <div class="box">

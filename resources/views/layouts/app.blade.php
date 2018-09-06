@@ -23,8 +23,8 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li><a href="{{url('/')}}"><i class="fa fa-angle-double-right"></i> Employee List</a></li>
-                        <li><a href="{{url('/')}}"><i class="fa fa-angle-double-right"></i> Employee's Attendance</a></li>
-                        <li><a href="{{url('/')}}"><i class="fa fa-angle-double-right"></i> Employee's Report</a></li>
+                        <li><a href="{{url('/attendance')}}"><i class="fa fa-angle-double-right"></i> Employee's Attendance</a></li>
+                        <li><a href="{{url('/report')}}"><i class="fa fa-angle-double-right"></i> Employee's Report</a></li>
                     </ul>
                 </section>
                 <!-- /.sidebar -->
