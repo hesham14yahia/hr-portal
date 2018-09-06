@@ -17,8 +17,8 @@ class CreateStatusesTable extends Migration
             $table->increments('id');
             $table->integer('present');
             $table->integer('absent');
-            $table->integer('present');
-            $table->integer('present');
+            $table->integer('sick_leave');
+            $table->integer('day_off');
             $table->timestamps();
         });
     }
