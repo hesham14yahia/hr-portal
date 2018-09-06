@@ -15,33 +15,25 @@
                         <th></th>
                     </tr>
                     
-                    {{-- @if(count($fixers) > 0)
-                        @foreach($fixers as $fixer)
+                    @if(count($emps) > 0)
+                        @foreach($emps as $emp)
                             <tr>
-                                <td>{{$fixer->id}}</td>
-                                <td style="width:10%">
-                                    <img class="img-responsive text-center fixer-img" src="/storage/image_bath/{{$fixer->image_bath}}">
-                                </td>
-                                <td>{{$fixer->name}}</td>
-                                <td>{{$fixer->birth_date}}</td>
-                                <td>{{$fixer->city->name}}</td>
+                                <td>{{$emp->id}}</td>
+                                <td>{{$emp->name}}</td>
+                                <td>{{$emp->email}}</td>
+                                <td>{{$emp->mobile}}</td>
+                                <td>{{$emp->hire_date}}</td>
                                 <td>
-                                    @foreach($fixer->areas as $area)
-                                        {{$area->name}} 
-                                    @endforeach
-                                </td>
-                                <td>{{$fixer->category->name}}</td>
-                                <td>                
-                                    <a href="{{url('/create')}}"><i class="btn btn-primary"></i> Add Employee</a>
-                                    <a href="{{url('/create')}}"><i class="btn btn-success"></i> Edit Employee</a>
-                                    <a href="{{url('/create')}}"><i class="btn btn-danger"></i> Delete Employee</a>
+                                    <a href="{{url('/edit')}}{{'/'.$emp->id}}" class="btn btn-success">Edit</a>
+                                    <a href="{{url('/destroy')}}{{'/'.$emp->id}}" class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         @endforeach
-                    @endif --}}
+                    @endif
                  </tbody>
             </table>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
+    <a href="{{url('/create')}}" class="btn btn-primary col-sm-1" style="float:right;margin-right:112px">Add</a>
 </div>
 @endsection

@@ -12,7 +12,7 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="{{url('/img/avatar3.png')}}" class="img-circle" alt="User Image" />
+                            <img src="{{url('/img/avatar5.png')}}" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
                             <p>{{ Auth::user()->name }}</p>
@@ -23,8 +23,8 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li><a href="{{url('/')}}"><i class="fa fa-angle-double-right"></i> Employee List</a></li>
-                        <li><a href="{{url('/create')}}"><i class="fa fa-angle-double-right"></i> Employee's Attendance</a></li>
-                        <li><a href="{{url('/create')}}"><i class="fa fa-angle-double-right"></i> Employee's Report</a></li>
+                        <li><a href="{{url('/')}}"><i class="fa fa-angle-double-right"></i> Employee's Attendance</a></li>
+                        <li><a href="{{url('/')}}"><i class="fa fa-angle-double-right"></i> Employee's Report</a></li>
                     </ul>
                 </section>
                 <!-- /.sidebar -->

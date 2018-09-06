@@ -14,3 +14,8 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/create', 'HomeController@create')->name('create');
+Route::post('/store', 'HomeController@store')->name('store');
+Route::get('/edit/{id}', 'HomeController@edit')->name('edit');
+Route::put('/update/{id}', 'HomeController@update')->name('update');
+Route::get('/destroy/{id}', 'HomeController@destroy')->name('destroy');
