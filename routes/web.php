@@ -19,3 +19,7 @@ Route::post('/store', 'HomeController@store')->name('store');
 Route::get('/edit/{id}', 'HomeController@edit')->name('edit');
 Route::put('/update/{id}', 'HomeController@update')->name('update');
 Route::get('/destroy/{id}', 'HomeController@destroy')->name('destroy');
+
+Route::get('/createAtt', 'HomeController@createAtt')->name('createAtt');
+Route::post('/storeAtt', 'HomeController@storeAtt')->name('storeAtt');
+
