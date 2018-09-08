@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Employee;
+use App\Attendance;
+use App\Status;
+use App\StatusSearch;
 
 class HomeController extends Controller
 {
@@ -25,8 +28,53 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $emps = Employee::all();
-        return view('home', compact('emps'));
+
+        $att = Attendance::pluck('day', 'id');
+        // $status = Status::pluck('present', 'id');
+        // $statusSearch = ['Present', 'Absent', 'Sick Leave', 'Day Off'];
+        $status = StatusSearch::pluck('status_Name', 'id');
+        if(filter_input(INPUT_GET, 'status_id')) {
+            if($_GET['status_id'] == 1) {
+                $stats = Status::where('present', '1')->get();
+                // return dd($stats->statusAtts->status_id);
+                // return $stats; statusAtts
+                // foreach($stats as $attend) {
+                //     echo  Employee::find($attend->statusAtts->employee_id);
+                // }
+                // return 1;
+                // return $atts = $stats->statusAtts;
+                // foreach($stats as $stat) {
+                //     $stat_att = Status::where('id', $stat->id);
+                // }
+                // foreach($stats as $stat) {
+                // $atts .= Attendance::where('status_id', $stat->id);
+                // }
+                // $atts = Attendance::where('status_id', $stat->id);
+            } else if ($_GET['status_id'] == 2) {
+                $stats = Status::where('absent', '1')->get();
+            } else if ($_GET['status_id'] == 3) {
+                $stats = Status::where('sick_leave', '1')->get();
+            } else if ($_GET['status_id'] == 4) {
+                $stats = Status::where('day_off', '1')->get();
+            }
+            $emps = Employee::all();
+            // $status = Status::where('')
+            // $emps = Attendance::where('id', $_GET['status_id'])->orderBy('id', 'asc')->employee()->paginate(2);
+        } else if(filter_input(INPUT_GET, 'att_id')){
+            $emps = Employee::where('id', $_GET['att_id'])->orderBy('id', 'asc')->get();
+            $stats = [];
+        } else {
+            $emps = Employee::orderBy('id', 'asc')->paginate(10);
+            $stats = [];
+        }
+
+        $empData = [
+            'stats' => $stats,
+            'emps' => $emps,
+            'att' => $att,
+            'status' => $status
+        ];
+        return view('home')->with($empData);
     }
 
     public function create() {

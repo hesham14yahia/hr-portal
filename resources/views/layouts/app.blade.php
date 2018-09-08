@@ -15,8 +15,11 @@
                             <img src="{{url('/img/avatar5.png')}}" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
+                            @if(Auth::user())
                             <p>{{ Auth::user()->name }}</p>
-
+                            @else
+                            <p><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></p>
+                            @endif
                             <a href="#"><i class="fa fa-circle text-success"></i> HR</a>
                         </div>
                     </div>
