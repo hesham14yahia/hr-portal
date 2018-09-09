@@ -190,11 +190,10 @@ class HomeController extends Controller
 
     public function report(){
 
-        if(filter_input(INPUT_GET, 'emp_name')) {
+        if(filter_input(INPUT_GET, 'emp_name') !== null) {
             if(filter_input(INPUT_GET, 'start_date')) {
                 if(filter_input(INPUT_GET, 'last_date')) {
                     $emps_id = Employee::where('name', $_GET['emp_name'])->select('id')->get();
-                    // $emp_id = $emp->get()->toArray();
                     foreach($emps_id as $emp_id) {
                         $emp_id;
                     }
@@ -219,14 +218,41 @@ class HomeController extends Controller
                     return view('report')->with($empData);
                 }
             }
-        } else {
-
-            $empData = [
-                'atts' => '',
-                'emp_name' => ''
-            ];
-    
-            return view('report')->with($empData);
         }
+        
+        $empData = [
+            'atts' => [],
+            'hours_total' => '',
+            'days_count' => '',
+            'emp_name' => ''
+        ];
+
+        return view('report')->with($empData);
+    }
+
+    public function empMonth() {
+
+        $emps = Employee::all();
+
+        foreach($emps as $emp) {
+            $work_hs = Attendance::where('employee_id', $emp->id)->select('work_hours')->get();
+            $hours_total = 0;
+            foreach($work_hs as $work_h) {
+                $hours_total += $work_h->work_hours;
+                // echo $hours_total;
+            }
+            $emps_month[] = $hours_total;
+            // var_dump($emps_month);
+        }
+        $emp_month = max($emps_month);
+        $emp_month_id = array_search($emp_month, $emps_month)+1;
+        $emp_month_name = Employee::find($emp_month_id)->name;
+
+        $emps_month_data = [
+            'emp_month' => $emp_month,
+            'emp_month_name' => $emp_month_name
+        ];
+
+        return view('empMonth')->with($emps_month_data);
     }
 }

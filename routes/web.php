@@ -24,3 +24,5 @@ Route::get('/createAtt', 'HomeController@createAtt')->name('createAtt');
 Route::post('/storeAtt', 'HomeController@storeAtt')->name('storeAtt');
 
 Route::get('/report', 'HomeController@report')->name('report');
+
+Route::get('/empMonth', 'HomeController@empMonth')->name('empMonth');

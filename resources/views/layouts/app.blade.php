@@ -28,6 +28,7 @@
                         <li><a href="{{url('/')}}"><i class="fa fa-angle-double-right"></i> Employee List</a></li>
                         <li><a href="{{url('/createAtt')}}"><i class="fa fa-angle-double-right"></i> Employee's Attendance</a></li>
                         <li><a href="{{url('/report')}}"><i class="fa fa-angle-double-right"></i> Employee's Report</a></li>
+                        <li><a href="{{url('/empMonth')}}"><i class="fa fa-angle-double-right"></i> Employee of the month</a></li>
                     </ul>
                 </section>
                 <!-- /.sidebar -->
