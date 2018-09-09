@@ -26,28 +26,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // Home Main Page
     public function index() {
+        
+        // Catch Data for select input
         $att = Attendance::pluck('day', 'id');
-        // $status = Status::pluck('present', 'id');
-        // $statusSearch = ['Present', 'Absent', 'Sick Leave', 'Day Off'];
         $status = StatusSearch::pluck('status_Name', 'id');
+        
+        // Check status type is submited and asign her value
         if(filter_input(INPUT_GET, 'status_id')) {
             if($_GET['status_id'] == 1) {
                 $stats = Status::where('present', '1')->get();
-                // return dd($stats->statusAtts->status_id);
-                // return $stats; statusAtts
-                // foreach($stats as $attend) {
-                //     echo  Employee::find($attend->statusAtts->employee_id);
-                // }
-                // return 1;
-                // return $atts = $stats->statusAtts;
-                // foreach($stats as $stat) {
-                //     $stat_att = Status::where('id', $stat->id);
-                // }
-                // foreach($stats as $stat) {
-                // $atts .= Attendance::where('status_id', $stat->id);
-                // }
-                // $atts = Attendance::where('status_id', $stat->id);
             } else if ($_GET['status_id'] == 2) {
                 $stats = Status::where('absent', '1')->get();
             } else if ($_GET['status_id'] == 3) {
@@ -55,10 +45,11 @@ class HomeController extends Controller
             } else if ($_GET['status_id'] == 4) {
                 $stats = Status::where('day_off', '1')->get();
             }
+
+            // Selcet all Employees
             $emps = Employee::all();
-            // $status = Status::where('')
-            // $emps = Attendance::where('id', $_GET['status_id'])->orderBy('id', 'asc')->employee()->paginate(2);
-        } else if(filter_input(INPUT_GET, 'att_id')){
+        } // Find the employees with date selected
+        else if(filter_input(INPUT_GET, 'att_id')){
             $emps = Employee::where('id', $_GET['att_id'])->orderBy('id', 'asc')->get();
             $stats = [];
         } else {
@@ -66,6 +57,7 @@ class HomeController extends Controller
             $stats = [];
         }
 
+        // Return Data to the page
         $empData = [
             'stats' => $stats,
             'emps' => $emps,
@@ -75,12 +67,15 @@ class HomeController extends Controller
         return view('home')->with($empData);
     }
 
+    // Create Employee page
     public function create() {
         return view('create');
     }
 
+    // Store New Employee
     public function store(Request $request) {
         
+        // Check for validation and submited
         $this->validate($request, [
             'name' => 'required',
             'hire_date' => 'required',
@@ -99,13 +94,18 @@ class HomeController extends Controller
         return redirect('/');
     }
 
+    // Edit Employee page
     public function edit($id) {
+        
+        // Return data of selected employee to edit
         $emp = Employee::find($id);
         return view('edit', compact('emp'));
     }
 
+    // Update edited employee info
     public function update(Request $request, $id) {
         
+        // Check for validation and submited
         $this->validate($request, [
             'name' => 'required',
             'hire_date' => 'required',
@@ -124,34 +124,41 @@ class HomeController extends Controller
         return redirect('/');
     }
 
+    // Delete an Employee
     public function destroy($id) {
+
+        // Catch employee
         $emp = Employee::findOrFail($id);
         $emp->delete();
 
         return redirect('/');
     }
 
+    // Create new Attendance page
     public function createAtt() {
-        // $emps = Employee::select('name')->get()->toArray();
+
+        // Return types of status to select from it
         $status = StatusSearch::pluck('status_name', 'id');
-        // $emps = Employee::pluck('name', 'id');
+
         return view('createAtt', compact('status'));
     }
 
+    // Store new Attendance 
     public function storeAtt(Request $request) {
+
+        // Check for validation and submited
         $this->validate($request, [
             'employee_id' => 'required',
             'status_id' => 'required',
             'work_hours' => 'required',
             'day' => 'required'
         ]);
-
-        $emp = Employee::where('name', $request->input('employee_id'))->get();
-        // Create Attendance
+        
+        // Create new Attendance and new Status
         $att = new Attendance;
         $stat = new Status;
-        $stat_last_id = Status::all()->last()->id;
-        
+
+        // Insert Status
         if($request->input('status_id') == 1) {
             $stat->present = 1;
             $stat->absent = 0;
@@ -175,37 +182,60 @@ class HomeController extends Controller
             $stat->present = 0;
             $stat->sick_leave = 0;
         }
-        foreach($emp as $em){
 
+
+        // Catch employee
+        $emp = Employee::where('name', $request->input('employee_id'))->get();
+        // Catch employee id to save into attendance's employee_id
+        foreach($emp as $em){
             $att->employee_id = $em->id;
         }
+        
+        // Catch last status id to add to attendance's status_id
+        $stat_last_id = Status::all()->last()->id;
         $att->status_id = ($stat_last_id+1);
+
+        // Return work hours and day date
         $att->work_hours = $request->input('work_hours');
         $att->day = $request->input('day');
+
         $att->save();
         $stat->save();
         
         return redirect('/');
     }
 
+    // Report page
     public function report(){
 
-        if(filter_input(INPUT_GET, 'emp_name') !== null) {
+        // Check for select filters
+        if(filter_input(INPUT_GET, 'emp_name')) {
             if(filter_input(INPUT_GET, 'start_date')) {
                 if(filter_input(INPUT_GET, 'last_date')) {
+                    
+                    // Catch employee id
                     $emps_id = Employee::where('name', $_GET['emp_name'])->select('id')->get();
                     foreach($emps_id as $emp_id) {
                         $emp_id;
                     }
+
+                    // Catch wanted attendance
                     $atts = Attendance::where('employee_id', $emp_id->id)->get();
 
+                    // total hours attending for employee between to dates
                     $from = $_GET['start_date'];
                     $to = $_GET['last_date'];
+
+                    // Array of work ours
                     $work_hs = Attendance::where('employee_id', $emp_id->id)->whereBetween('day', [$from, $to])->select('work_hours')->get();
+                    
+                    // Calculate total hours
                     $hours_total = 0;
                     foreach($work_hs as $work_h) {
                         $hours_total += $work_h->work_hours;
                     }
+
+                    // Calculate total dates
                     $days_count = count($work_hs);
 
                     $empData = [
@@ -220,6 +250,7 @@ class HomeController extends Controller
             }
         }
         
+        // Prevent Error
         $empData = [
             'atts' => [],
             'hours_total' => '',
@@ -230,22 +261,35 @@ class HomeController extends Controller
         return view('report')->with($empData);
     }
 
+    // Employee of the month
     public function empMonth() {
 
+        // Catch all employees
         $emps = Employee::all();
 
+        // Calculate work hours to all employee
         foreach($emps as $emp) {
+
+            // Catch work hours
             $work_hs = Attendance::where('employee_id', $emp->id)->select('work_hours')->get();
+
+            // Calculate total work hours
             $hours_total = 0;
             foreach($work_hs as $work_h) {
                 $hours_total += $work_h->work_hours;
-                // echo $hours_total;
             }
+
+            // Save employees work hours to Array
             $emps_month[] = $hours_total;
-            // var_dump($emps_month);
         }
+
+        // Catch max total work hours
         $emp_month = max($emps_month);
+
+        // Catch employee id with max total work hours
         $emp_month_id = array_search($emp_month, $emps_month)+1;
+
+        // Catch employee name with max total work hours
         $emp_month_name = Employee::find($emp_month_id)->name;
 
         $emps_month_data = [
