@@ -187,4 +187,46 @@ class HomeController extends Controller
         
         return redirect('/');
     }
+
+    public function report(){
+
+        if(filter_input(INPUT_GET, 'emp_name')) {
+            if(filter_input(INPUT_GET, 'start_date')) {
+                if(filter_input(INPUT_GET, 'last_date')) {
+                    $emps_id = Employee::where('name', $_GET['emp_name'])->select('id')->get();
+                    // $emp_id = $emp->get()->toArray();
+                    foreach($emps_id as $emp_id) {
+                        $emp_id;
+                    }
+                    $atts = Attendance::where('employee_id', $emp_id->id)->get();
+
+                    $from = $_GET['start_date'];
+                    $to = $_GET['last_date'];
+                    $work_hs = Attendance::where('employee_id', $emp_id->id)->whereBetween('day', [$from, $to])->select('work_hours')->get();
+                    $hours_total = 0;
+                    foreach($work_hs as $work_h) {
+                        $hours_total += $work_h->work_hours;
+                    }
+                    $days_count = count($work_hs);
+
+                    $empData = [
+                        'atts' => $atts,
+                        'hours_total' => $hours_total,
+                        'days_count' => $days_count,
+                        'emp_name' => $_GET['emp_name']
+                    ];
+
+                    return view('report')->with($empData);
+                }
+            }
+        } else {
+
+            $empData = [
+                'atts' => '',
+                'emp_name' => ''
+            ];
+    
+            return view('report')->with($empData);
+        }
+    }
 }
